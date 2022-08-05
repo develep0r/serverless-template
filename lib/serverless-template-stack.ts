@@ -26,7 +26,9 @@ export class ServerlessTemplateStack extends Stack {
     const nodeJsFunctionProps: NodejsFunctionProps = {
       bundling: {
         externalModules: [
-          'aws-sdk'
+          "aws-sdk",
+          "@aws-sdk/client-dynamodb",
+          "@aws-sdk/util-dynamodb"
         ]
       },
       environment: {
@@ -48,8 +50,8 @@ export class ServerlessTemplateStack extends Stack {
 
     // API Gateway configuration
     // Exposes REST API with the following paths GET /employee and GET /employee{id}
-    const employeeApi = new LambdaRestApi(this, 'employeeApi', {
-      restApiName: 'Employee Service',
+    const employeeApi = new LambdaRestApi(this, 'employee-api', {
+      restApiName: 'employee-api',
       handler: employeeLambdaFunction,
       proxy: false
     });
@@ -61,23 +63,24 @@ export class ServerlessTemplateStack extends Stack {
     singleEmployee.addMethod('GET'); 
 
   // Code Pipeline Setup
-  const codePipeline = new CodePipeline(this, 'Employee Pipeline', {
-    pipelineName: 'Employee Pipeline',
+  const codePipeline = new CodePipeline(this, 'employee-pipeline', {
+    pipelineName: 'employee-pipeline',
+    dockerEnabledForSynth: true,
     synth: new ShellStep('Build', {
       input: CodePipelineSource.gitHub('develep0r/serverless-template', 'master'),
       commands: ['npm ci', 'npm run build', 'npx cdk synth']
     })
   });
 
-  const staging = codePipeline.addStage(new Stage(this, 'staging', {
-    env: { account: '478602235759', region: 'us-east-1'}
-  }));
+  // const staging = codePipeline.addStage(new Stage(this, 'staging', {
+  //   env: { account: '478602235759', region: 'us-east-1'}
+  // }));
 
-  staging.addPost(new ManualApprovalStep('APPROVAL REQUIRED: Deploy to Production'));
+  // staging.addPost(new ManualApprovalStep('APPROVAL REQUIRED: Deploy to Production'));
 
-  const production = codePipeline.addStage(new Stage(this, 'production', {
-    env: { account: '478602235759', region: 'us-east-1'}
-  }));
+  // const production = codePipeline.addStage(new Stage(this, 'production', {
+  //   env: { account: '478602235759', region: 'us-east-1'}
+  // }));
 
   }
 }
