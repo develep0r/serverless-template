@@ -30,6 +30,7 @@ export class EmployeeServiceStack extends Stack {
     //       "@aws-sdk/util-dynamodb"
     //     ]
     //   },
+      depsLockFilePath: join(__dirname, `/../src/employee/`),
       environment: {
         stageName: stageName,
         PRIMARY_KEY: 'id',
