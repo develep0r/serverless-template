@@ -23,13 +23,13 @@ export class EmployeeServiceStack extends Stack {
     });
 
     const nodeJsFunctionProps: NodejsFunctionProps = {
-    //   bundling: {
-    //     externalModules: [
-    //       "aws-sdk",
-    //       "@aws-sdk/client-dynamodb",
-    //       "@aws-sdk/util-dynamodb"
-    //     ]
-    //   },
+      bundling: {
+        externalModules: [
+          "aws-sdk",
+          "@aws-sdk/client-dynamodb",
+          "@aws-sdk/util-dynamodb"
+        ]
+      },
       depsLockFilePath: join(__dirname, `/../src/employee/`),
       environment: {
         stageName: stageName,
