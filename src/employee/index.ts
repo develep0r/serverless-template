@@ -1,10 +1,9 @@
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda';
-import { getEmployee, getAllEmployees } from './repository/employeeRepository';
+import { getEmployee, getAllEmployees } from './employee';
 
 
 export async function get(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> {
   console.log(event);
-
     try {
       let body;
       switch (event.requestContext.http.method) {

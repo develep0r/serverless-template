@@ -23,12 +23,11 @@ export class EmployeeServiceStack extends Stack {
     });
 
     const nodeJsFunctionProps: NodejsFunctionProps = {
-      bundling: {
-        externalModules: [
-          "aws-sdk"
-        ]
-      },
-      depsLockFilePath: join(__dirname, `/../src/employee/`),
+    //   bundling: {
+    //     externalModules: [
+    //       "aws-sdk"
+    //     ]
+    //   },
       environment: {
         stageName: stageName,
         PRIMARY_KEY: 'id',
