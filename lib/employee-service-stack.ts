@@ -23,13 +23,13 @@ export class EmployeeServiceStack extends Stack {
     });
 
     const nodeJsFunctionProps: NodejsFunctionProps = {
-      bundling: {
-        externalModules: [
-          "aws-sdk",
-          "@aws-sdk/client-dynamodb",
-          "@aws-sdk/util-dynamodb"
-        ]
-      },
+    //   bundling: {
+    //     externalModules: [
+    //       "aws-sdk",
+    //       "@aws-sdk/client-dynamodb",
+    //       "@aws-sdk/util-dynamodb"
+    //     ]
+    //   },
       environment: {
         stageName: stageName,
         PRIMARY_KEY: 'id',
@@ -40,7 +40,7 @@ export class EmployeeServiceStack extends Stack {
 
     // Simple CRUD microservice powered by AWS Lambda
     const employeeLambdaFunction = new NodejsFunction(this, 'employeeLambdaFunction', {
-      entry: join(__dirname, `/../src/employee/index.js`),
+      entry: join(__dirname, `/../src/employee/index.ts`),
       ...nodeJsFunctionProps,
     })
 
