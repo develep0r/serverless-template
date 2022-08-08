@@ -1,15 +1,16 @@
-import { marshall } from '@aws-sdk/util-dynamodb';
-import { GetItemInput, ScanInput } from 'aws-sdk/clients/dynamodb';
-import Employee from '../model/employee';
+import { marshall } from "@aws-sdk/util-dynamodb";
+import { DynamoDB } from 'aws-sdk';
+import Employee from "../model/employee";
 import { dynamoClient } from "./database";
+
 
 
 export async function getEmployee(employeeId: string) {
     console.log("getEmployee");
 
     try {
-        const params: GetItemInput = {
-            TableName: process.env.DYNAMODB_TABLE_NAME!,
+        const params: DynamoDB.DocumentClient.GetItemInput = {
+            TableName!: process.env.DYNAMODB_TABLE_NAME!,
             Key: marshall({ id: employeeId })
         };
         const result = await dynamoClient.get(params).promise();
@@ -28,7 +29,7 @@ export async function getEmployee(employeeId: string) {
   export async function getAllEmployees() {
     console.log("getAllEmployees");
     try {
-        const params: ScanInput = {
+        const params: DynamoDB.DocumentClient.ScanInput = {
             TableName: process.env.DYNAMODB_TABLE_NAME!
         };
         const result = await dynamoClient.scan(params).promise();
