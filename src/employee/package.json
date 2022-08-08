@@ -2,7 +2,7 @@
   "name": "@src/employee",
   "version": "1.0.0",
   "description": "Employee microservice",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "tslint -p tsconfig.json && jest"
   },
