@@ -23,11 +23,11 @@ export class EmployeeServiceStack extends Stack {
     });
 
     const nodeJsFunctionProps: NodejsFunctionProps = {
-    //   bundling: {
-    //     externalModules: [
-    //       "aws-sdk"
-    //     ]
-    //   },
+      bundling: {
+        externalModules: [
+          "@aws-sdk/util-dynamodb/dist-types/marshall"
+        ]
+      },
       environment: {
         stageName: stageName,
         PRIMARY_KEY: 'id',
