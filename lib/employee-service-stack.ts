@@ -40,7 +40,7 @@ export class EmployeeServiceStack extends Stack {
 
     // Simple CRUD microservice powered by AWS Lambda
     const employeeLambdaFunction = new NodejsFunction(this, 'employeeLambdaFunction', {
-      entry: join(__dirname, `/../src/employee/index.js`),
+      entry: join(__dirname, `/../employee/index.js`),
       ...nodeJsFunctionProps,
     })
 
