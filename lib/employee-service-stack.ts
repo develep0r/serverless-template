@@ -7,7 +7,7 @@ import { Construct } from 'constructs';
 import { join } from 'path';
 
 export class EmployeeServiceStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, stageName: string, props?: StackProps) {
     super(scope, id, props);
     
 
@@ -25,10 +25,13 @@ export class EmployeeServiceStack extends Stack {
     const nodeJsFunctionProps: NodejsFunctionProps = {
       bundling: {
         externalModules: [
-          "@aws-sdk/util-dynamodb/dist-types/marshall"
+          "aws-sdk",
+          "@aws-sdk/client-dynamodb",
+          "@aws-sdk/util-dynamodb"
         ]
       },
       environment: {
+        stageName: stageName,
         PRIMARY_KEY: 'id',
         DYNAMODB_TABLE_NAME: employeeTable.tableName
       },
@@ -37,7 +40,7 @@ export class EmployeeServiceStack extends Stack {
 
     // Simple CRUD microservice powered by AWS Lambda
     const employeeLambdaFunction = new NodejsFunction(this, 'employeeLambdaFunction', {
-      entry: join(__dirname, `/../src/employee/index.ts`),
+      entry: join(__dirname, `/../src/employee/index.js`),
       ...nodeJsFunctionProps,
     })
 
