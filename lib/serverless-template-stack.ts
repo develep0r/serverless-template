@@ -1,11 +1,18 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
+import { RemovalPolicy, Stack, StackProps, Stage } from 'aws-cdk-lib';
+import { LambdaRestApi } from 'aws-cdk-lib/aws-apigateway';
+import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
+import { Runtime } from 'aws-cdk-lib/aws-lambda';
+import { NodejsFunctionProps, NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { CodePipeline, CodePipelineSource, ManualApprovalStep, ShellStep } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
-import { EmployeeServiceStage } from './employee-service-stage';
+import { join } from 'path';
+import { EmployeeServiceStack } from './employee-service-stack';
 
 export class ServerlessTemplateStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
+    // Provision Employee Service Stack
+    new EmployeeServiceStack(this, 'employee-service-stack', props);
 
     // Code Pipeline Setup
     const codePipeline = new CodePipeline(this, 'employee-pipeline', {
@@ -17,15 +24,15 @@ export class ServerlessTemplateStack extends Stack {
       })
     });
 
-    const staging = codePipeline.addStage(new EmployeeServiceStage(this, 'staging', {
-      env: { account: '478602235759', region: 'us-east-1'}
-    }));
+  // const staging = codePipeline.addStage(new Stage(this, 'staging', {
+  //   env: { account: '478602235759', region: 'us-east-1'}
+  // }));
 
-    staging.addPost(new ManualApprovalStep('APPROVAL REQUIRED: Deploy to Production'));
+  // staging.addPost(new ManualApprovalStep('APPROVAL REQUIRED: Deploy to Production'));
 
-    const production = codePipeline.addStage(new EmployeeServiceStage(this, 'production', {
-      env: { account: '478602235759', region: 'us-east-1'}
-    }));
+  // const production = codePipeline.addStage(new Stage(this, 'production', {
+  //   env: { account: '478602235759', region: 'us-east-1'}
+  // }));
 
   }
 }

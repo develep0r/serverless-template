@@ -7,7 +7,7 @@ import { Construct } from 'constructs';
 import { join } from 'path';
 
 export class EmployeeServiceStack extends Stack {
-  constructor(scope: Construct, id: string, stageName: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
     
 
@@ -29,7 +29,6 @@ export class EmployeeServiceStack extends Stack {
         ]
       },
       environment: {
-        stageName: stageName,
         PRIMARY_KEY: 'id',
         DYNAMODB_TABLE_NAME: employeeTable.tableName
       },
